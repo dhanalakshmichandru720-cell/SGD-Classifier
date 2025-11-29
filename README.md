@@ -15,31 +15,7 @@ To write a program to predict the type of species of the Iris flower using the S
 ## Program:
 ```
 /*
-# Logistic Regression using SGD Classifier with Visualization
-import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.datasets import make_classification
-from sklearn.linear_model import SGDClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, classification_report
-
-# 1. Generate synthetic dataset (2 features for easy visualization)
-X, y = make_classification(
-    n_samples=500, n_features=2, n_informative=2, n_redundant=0,
-    n_clusters_per_class=1, flip_y=0.1, random_state=42
-)
-
-# 2. Train-test split
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
-
-# 3. Initialize SGD Classifier for Logistic Regression
-model = SGDClassifier(loss='log_loss', max_iter=1000, tol=1e-3, random_state=42)
-model.fit(X_train, y_train)
-
-# 4. Predictions & Evaluation
-y_pred = model.predict(X_test)
+\
 print("Accuracy:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
