@@ -15,76 +15,59 @@ To write a program to predict the type of species of the Iris flower using the S
 ## Program:
 ```
 /*
-import pandas as pd
 import numpy as np
+import pandas as pd
+from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import SGDClassifier
-from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# ------------------------------
-# Step 1: Sample dataset
-# ------------------------------
+
+# Example: Predict Placement (1 = Placed, 0 = Not Placed)
 data = {
-    'Hours_Studied': [2, 3, 4, 5, 6, 7, 8, 9],
-    'Previous_Score': [40, 50, 55, 60, 65, 70, 75, 80],
-    'Internship': [0, 0, 1, 0, 1, 1, 1, 1],  # 0 = No, 1 = Yes
-    'Placement': [0, 0, 0, 1, 1, 1, 1, 1]    # Target: 0 = Not Placed, 1 = Placed
+    'CGPA': [8.5, 6.8, 7.9, 5.4, 9.1, 8.0, 7.5, 6.0, 9.3, 5.8],
+    'Aptitude_Score': [82, 55, 75, 48, 92, 77, 73, 50, 95, 45],
+    'Communication_Skill': [8, 6, 7, 5, 9, 8, 7, 6, 9, 5],
+    'Placed': [1, 0, 1, 0, 1, 1, 1, 0, 1, 0]
 }
 
 df = pd.DataFrame(data)
+print("Dataset:\n", df, "\n")
 
-# ------------------------------
-# Step 2: Split into features and target
-# ------------------------------
-X = df[['Hours_Studied', 'Previous_Score', 'Internship']]
-y = df['Placement']
 
-# ------------------------------
-# Step 3: Train-test split
-# ------------------------------
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+X = df[['CGPA', 'Aptitude_Score', 'Communication_Skill']]
+y = df['Placed']
 
-# ------------------------------
-# Step 4: Feature scaling
-# ------------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
 scaler = StandardScaler()
-X_train = scaler.fit_transform(X_train)
-X_test = scaler.transform(X_test)
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# ------------------------------
-# Step 5: Create and train SGDClassifier for Logistic Regression
-# ------------------------------
-sgd_model = SGDClassifier(loss='log_loss',       # 'log' loss → logistic regression
-                          max_iter=1000,
-                          learning_rate='optimal',
-                          random_state=42)
-sgd_model.fit(X_train, y_train)
 
-# ------------------------------
-# Step 6: Make predictions
-# ------------------------------
-y_pred = sgd_model.predict(X_test)
-y_prob = sgd_model.predict_proba(X_test)   # Probability of placement
+model = SGDClassifier(loss='log_loss', max_iter=1000, learning_rate='optimal', random_state=42)
+model.fit(X_train_scaled, y_train)
 
-# ------------------------------
-# Step 7: Evaluate the model
-# ------------------------------
+y_pred = model.predict(X_test_scaled)
+
+
 print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
-print("\nAccuracy Score:", accuracy_score(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
+print("Accuracy:", accuracy_score(y_test, y_pred))
 
-# ------------------------------
-# Step 8: Predict placement for a new student
-# ------------------------------
-new_student = np.array([[6, 68, 1]])  # Example: 6 hours, 68 prev score, Internship yes
+new_student = np.array([[8.3, 80, 8]])  # [CGPA, Aptitude, Communication]
 new_student_scaled = scaler.transform(new_student)
-placement_pred = sgd_model.predict(new_student_scaled)
-placement_prob = sgd_model.predict_proba(new_student_scaled)
+prediction = model.predict(new_student_scaled)
 
-print(f"\nPredicted Placement Status: {'Placed' if placement_pred[0]==1 else 'Not Placed'}")
-print(f"Probability of Placement: {placement_prob[0][1]:.2f}")
-\
+print("\nNew Student Prediction:")
+if prediction[0] == 1:
+    print(" The student is LIKELY to be PLACED.")
+else:
+    print("The student is NOT likely to be placed.")
+    
+
+
 
 Developed by: dhanalakshmi.c
 RegisterNumber:  25018616
@@ -92,8 +75,7 @@ RegisterNumber:  25018616
 ```
 
 ## Output:
-<img width="515" height="400" alt="image" src="https://github.com/user-attachments/assets/d11577c1-c5dd-4c55-a66d-b90b2f60c6b2" />
-
+<img width="749" height="596" alt="image" src="https://github.com/user-attachments/assets/b0ba76f9-df42-4e7e-a011-ae3992bb79cd" />
 
 
 ## Result:
